@@ -61,7 +61,13 @@
                 this.material = new THREE.MeshLambertMaterial({ color: color });
                 this.mesh = new THREE.Mesh(this.geometry, this.material);
                 this.mesh.castShadow = true;
-                scene.add(this.mesh);
+                
+                // Create the wireframe
+        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 }); // Black wireframe
+        this.wireframe = new THREE.LineSegments(new THREE.WireframeGeometry(this.geometry), wireframeMaterial);
+        
+        scene.add(this.mesh);
+        scene.add(this.wireframe); // Add wireframe to the scen
 
                 // Movement variables
                 this.direction = 1;
@@ -91,6 +97,7 @@
 
                 // Update the sphere mesh position
                this.mesh.position.y = this.positionY;
+               this.wireframe.position.y = this.positionY;
                this.mesh.rotation.x += 0.01; 
                this.mesh.rotation.y += 0.01; 
 
