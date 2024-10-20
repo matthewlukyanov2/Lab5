@@ -60,8 +60,22 @@
 
         // Function to rotate the sphere
              update() {
-             this.mesh.rotation.x += 0.01; 
-             this.mesh.rotation.y += 0.01; 
+                // Apply gravity to vertical velocity
+                this.velocityY += this.gravity;
+
+                // Update the sphere's position
+                this.positionY += this.velocityY;
+
+                // Check for bounce
+                if (this.positionY <= -2) { // Plane position
+                    this.positionY = -2; 
+                    this.velocityY *= -this.bounceFactor; 
+                }
+
+                // Update the sphere mesh position
+               this.mesh.position.y = this.positionY;
+               this.mesh.rotation.x += 0.01; 
+               this.mesh.rotation.y += 0.01; 
 
               // Move the sphere left and right
               this.mesh.position.x += this.direction * 0.02; 
@@ -83,6 +97,13 @@
          // Add a camera helper to visualize the light source
          const cameraHelper = new THREE.AxesHelper(1);
          scene.add(cameraHelper);
+
+         // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
         // Animation loop
         function animate() {
