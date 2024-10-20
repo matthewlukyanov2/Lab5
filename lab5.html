@@ -15,7 +15,7 @@
 
         // Scene setup
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
 
         // Set the size of the renderer and append it to the body
@@ -31,12 +31,18 @@
         // Set the camera position
         camera.position.z = 5;
 
+        // Function to rotate the sphere
+        function repeatMe() {
+            sphere.rotation.x += 0.01; 
+            sphere.rotation.y += 0.01;
+        }
+
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
             
             // Rotate the sphere for some dynamic effect
-            sphere.rotation.y += 0.01;
+            repeatMe();
 
             // Render the scene
             renderer.render(scene, camera);
