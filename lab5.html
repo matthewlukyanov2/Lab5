@@ -11,6 +11,7 @@
     </style>
 </head>
 <body>
+    <h1>Matthew</h1>
     <script>
 
         // Scene setup
@@ -63,11 +64,11 @@
                 this.mesh.castShadow = true;
                 
                 // Create the wireframe
-        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 }); // Black wireframe
-        this.wireframe = new THREE.LineSegments(new THREE.WireframeGeometry(this.geometry), wireframeMaterial);
+                const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 }); // Black wireframe
+                this.wireframe = new THREE.LineSegments(new THREE.WireframeGeometry(this.geometry), wireframeMaterial);
         
-        scene.add(this.mesh);
-        scene.add(this.wireframe); // Add wireframe to the scen
+                scene.add(this.mesh);
+                scene.add(this.wireframe); // Add wireframe to the scene
 
                 // Movement variables
                 this.direction = 1;
@@ -126,6 +127,19 @@
                     const direction = new THREE.Vector3().subVectors(this.mesh.position, otherSphere.mesh.position).normalize();
                     this.mesh.position.addScaledVector(direction, overlap / 2); 
                     otherSphere.mesh.position.addScaledVector(direction, -overlap / 2); 
+                }
+            }
+            checkCubeCollision() {
+                const halfSize = 2; // Half the size of the cube
+                // Check for collisions with the cube's boundaries
+                if (this.mesh.position.x > halfSize || this.mesh.position.x < -halfSize || 
+                    this.mesh.position.y < -halfSize || this.mesh.position.y > halfSize) {
+                    // Reverse direction if outside the cube
+                    this.direction *= -1;
+                    // Adjust position to keep inside the cube
+                    if (this.mesh.position.x > halfSize) this.mesh.position.x = halfSize;
+                    if (this.mesh.position.x < -halfSize) this.mesh.position.x = -halfSize;
+                    if (this.mesh.position.y > halfSize) this.mesh.position.y = halfSize;
                 }
             }
         }
