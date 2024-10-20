@@ -24,7 +24,7 @@
 
         // Create a geometry and material for the sphere
         const sphereGeometry = new THREE.SphereGeometry(1, 32, 32); 
-        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: false  });
+        const sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
         const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
         scene.add(sphere);
 
