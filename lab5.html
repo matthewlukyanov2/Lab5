@@ -46,13 +46,12 @@
                 this.geometry = new THREE.SphereGeometry(1, 32, 32);
                 this.material = new THREE.MeshLambertMaterial({ color: 0xff0000 });
                 this.mesh = new THREE.Mesh(this.geometry, this.material);
+                this.mesh.castShadow = true;
                 scene.add(this.mesh);
 
                 // Movement variables
                 this.direction = 1;
             }
-        
-
 
         // Function to rotate the sphere
              update() {
@@ -73,8 +72,12 @@
          // Create a sphere instance
          const sphere = new Sphere();
 
-        // Set the camera position so it's outside the sphere
-        camera.position.z = 5;
+         // Set the camera position so it's outside the sphere
+         camera.position.z = 5;
+
+         // Add a camera helper to visualize the light source
+         const cameraHelper = new THREE.AxesHelper(1);
+         scene.add(cameraHelper);
 
         // Animation loop
         function animate() {
