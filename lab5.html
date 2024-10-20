@@ -43,9 +43,9 @@
 
          // Sphere class 
          class Sphere {
-            constructor() {
+            constructor(color, initialPositionX) {
                 this.geometry = new THREE.SphereGeometry(1, 32, 32);
-                this.material = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+                this.material = new THREE.MeshLambertMaterial({ color: color });
                 this.mesh = new THREE.Mesh(this.geometry, this.material);
                 this.mesh.castShadow = true;
                 scene.add(this.mesh);
@@ -56,6 +56,7 @@
                 this.velocityY = 0; // Initial vertical velocity
                 this.gravity = -0.1; // Gravity acceleration
                 this.bounceFactor = 0.7; // Energy lost on bounce
+                this.mesh.position.x = initialPositionX; // initial position
             }
 
             // Function to rotate the sphere
@@ -93,32 +94,29 @@
                 // Calculate the distance between the two spheres
                 const distance = this.mesh.position.distanceTo(otherSphere.mesh.position);
 
-                // Check if the distance is less than the sum of their radii (2 * radius for both spheres)
+                // Check if the distance is less than the sum of their radius
                 if (distance < 2) { // Since both spheres have radius 1
-                    // Basic collision response: reverse directions
                     this.direction *= -1;
                     otherSphere.direction *= -1;
-
-                    // Optional: Move spheres apart slightly to prevent sticking
-                    const overlap = 2 - distance; // Amount of overlap
+                    //Move spheres apart slightly to prevent sticking
+                    const overlap = 2 - distance; 
                     const direction = new THREE.Vector3().subVectors(this.mesh.position, otherSphere.mesh.position).normalize();
-                    this.mesh.position.addScaledVector(direction, overlap / 2); // Move this sphere
-                    otherSphere.mesh.position.addScaledVector(direction, -overlap / 2); // Move the other sphere
+                    this.mesh.position.addScaledVector(direction, overlap / 2); 
+                    otherSphere.mesh.position.addScaledVector(direction, -overlap / 2); 
                 }
             }
         }
 
-           
-
-         // Create a sphere instance
-         const sphere = new Sphere();
+         // Create two sphere instances
+        const sphere1 = new Sphere(0xff0000, -2); // Red sphere on the left
+        const sphere2 = new Sphere(0x0000ff, 2); // Blue sphere on the right  
 
          // Set the camera position so it's outside the sphere
          camera.position.z = 5;
 
          // Add a camera helper to visualize the light source
-         const cameraHelper = new THREE.AxesHelper(1);
-         scene.add(cameraHelper);
+         //const cameraHelper = new THREE.AxesHelper(1);
+         //scene.add(cameraHelper);
 
          // Handle window resize
         window.addEventListener('resize', () => {
@@ -131,8 +129,9 @@
         function animate() {
             requestAnimationFrame(animate);
             
-            // Update the sphere
-            sphere.update();
+            // Update both spheres
+            sphere1.update(sphere2);
+            sphere2.update(sphere1)
 
             // Render the scene
             renderer.render(scene, camera);
