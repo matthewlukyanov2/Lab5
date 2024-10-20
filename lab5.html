@@ -41,6 +41,15 @@
         function repeatMe() {
             sphere.rotation.x += 0.01; 
             sphere.rotation.y += 0.01;
+
+             // Move the sphere left and right
+             sphere.position.x += direction * 0.02; 
+
+             // Reverse direction when hitting boundaries
+             if (sphere.position.x > 2 || sphere.position.x < -2) {
+              direction *= -1; // Change direction
+             }
+
         }
 
         // Animation loop
