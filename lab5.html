@@ -58,8 +58,8 @@
                 this.bounceFactor = 0.7; // Energy lost on bounce
             }
 
-        // Function to rotate the sphere
-             update() {
+            // Function to rotate the sphere
+             update(otherSphere) {
                 // Apply gravity to vertical velocity
                 this.velocityY += this.gravity;
 
@@ -84,9 +84,31 @@
               if (this.mesh.position.x > 2 || this.mesh.position.x < -2) {
               this.direction *= -1; // Change direction
              }
-            }
-
+            
+            // Check for collision with another sphere
+            this.checkCollision(otherSphere);
         }
+
+        checkCollision(otherSphere) {
+                // Calculate the distance between the two spheres
+                const distance = this.mesh.position.distanceTo(otherSphere.mesh.position);
+
+                // Check if the distance is less than the sum of their radii (2 * radius for both spheres)
+                if (distance < 2) { // Since both spheres have radius 1
+                    // Basic collision response: reverse directions
+                    this.direction *= -1;
+                    otherSphere.direction *= -1;
+
+                    // Optional: Move spheres apart slightly to prevent sticking
+                    const overlap = 2 - distance; // Amount of overlap
+                    const direction = new THREE.Vector3().subVectors(this.mesh.position, otherSphere.mesh.position).normalize();
+                    this.mesh.position.addScaledVector(direction, overlap / 2); // Move this sphere
+                    otherSphere.mesh.position.addScaledVector(direction, -overlap / 2); // Move the other sphere
+                }
+            }
+        }
+
+           
 
          // Create a sphere instance
          const sphere = new Sphere();
