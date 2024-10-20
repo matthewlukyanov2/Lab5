@@ -22,15 +22,6 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Create a geometry and material for the sphere
-        const sphereGeometry = new THREE.SphereGeometry(1, 32, 32); 
-        const sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
-        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        scene.add(sphere);
-
-        // Set the camera position
-        camera.position.z = 5;
-
         //Spotlight
         var spotLight = new THREE.SpotLight(0xffffff);
         spotLight.position.set(1, 0.5, 1); 
@@ -43,31 +34,41 @@
                 this.material = new THREE.MeshLambertMaterial({ color: 0xff0000 });
                 this.mesh = new THREE.Mesh(this.geometry, this.material);
                 scene.add(this.mesh);
+
+                // Movement variables
+                this.direction = 1;
             }
-        }
+        
 
 
         // Function to rotate the sphere
-        function repeatMe() {
-            sphere.rotation.x += 0.01; 
-            sphere.rotation.y += 0.01;
+             update() {
+             this.mesh.rotation.x += 0.01; 
+             this.mesh.rotation.y += 0.01; 
 
-             // Move the sphere left and right
-             sphere.position.x += direction * 0.02; 
+              // Move the sphere left and right
+              this.mesh.position.x += this.direction * 0.02; 
 
-             // Reverse direction when hitting boundaries
-             if (sphere.position.x > 2 || sphere.position.x < -2) {
-              direction *= -1; // Change direction
+              // Reverse direction when hitting boundaries
+              if (this.mesh.position.x > 2 || this.mesh.position.x < -2) {
+              this.direction *= -1; // Change direction
              }
+            }
 
         }
+
+         // Create a sphere instance
+         const sphere = new Sphere();
+
+        // Set the camera position so it's outside the sphere
+        camera.position.z = 5;
 
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
             
-            // Rotate the sphere for some dynamic effect
-            repeatMe();
+            // Update the sphere
+            sphere.update();
 
             // Render the scene
             renderer.render(scene, camera);
