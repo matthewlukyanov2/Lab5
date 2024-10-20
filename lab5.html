@@ -40,6 +40,19 @@
         plane.position.y = -2; 
         plane.receiveShadow = true; 
         scene.add(plane);
+        
+        // Create a transparent cube
+        const cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
+        const cubeMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            transparent: true,
+            opacity: 0.5,
+            side: THREE.DoubleSide //transparent
+        });
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.y = 1; // Position the cube
+        cube.receiveShadow = true; // Allow the cube to receive shadows
+        scene.add(cube);
 
          // Sphere class 
          class Sphere {
@@ -57,6 +70,9 @@
                 this.gravity = -0.1; // Gravity acceleration
                 this.bounceFactor = 0.7; // Energy lost on bounce
                 this.mesh.position.x = initialPositionX; // initial position
+                this.mesh.position.y = this.positionY; // Set initial height
+                this.mesh.position.z = 0; // Initial z position
+                
             }
 
             // Function to rotate the sphere
@@ -113,10 +129,6 @@
 
          // Set the camera position so it's outside the sphere
          camera.position.z = 5;
-
-         // Add a camera helper to visualize the light source
-         //const cameraHelper = new THREE.AxesHelper(1);
-         //scene.add(cameraHelper);
 
          // Handle window resize
         window.addEventListener('resize', () => {
