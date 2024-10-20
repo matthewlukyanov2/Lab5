@@ -15,6 +15,7 @@
 
         // Scene setup
         const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xeeeeee); // Set background color
         const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true});
 
@@ -27,7 +28,7 @@
 
         //Spotlight
         var spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(1, 0.5, 1); 
+        spotLight.position.set(1, 5, 1); 
         spotLight.castShadow = true;
         scene.add(spotLight);
 
@@ -51,6 +52,10 @@
 
                 // Movement variables
                 this.direction = 1;
+                this.positionY = 5; // Starting height
+                this.velocityY = 0; // Initial vertical velocity
+                this.gravity = -0.1; // Gravity acceleration
+                this.bounceFactor = 0.7; // Energy lost on bounce
             }
 
         // Function to rotate the sphere
